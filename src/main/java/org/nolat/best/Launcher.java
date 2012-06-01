@@ -4,8 +4,12 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
+import org.pushingpixels.substance.api.skin.SubstanceOfficeBlack2007LookAndFeel;
 
 public class Launcher {
 
@@ -24,6 +28,18 @@ public class Launcher {
 
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        new Launcher();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(new SubstanceOfficeBlack2007LookAndFeel());
+                } catch (UnsupportedLookAndFeelException e) {
+                    log.error(e);
+                }
+                new Launcher();
+            }
+        });
+
     }
 }
