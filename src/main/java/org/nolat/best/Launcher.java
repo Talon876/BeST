@@ -1,9 +1,11 @@
 package org.nolat.best;
 
-import java.awt.Image;
+import java.awt.SystemTray;
+import java.io.IOException;
+import java.util.Properties;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -16,19 +18,24 @@ public class Launcher {
     private static final Logger log = Logger.getLogger(Launcher.class);
 
     public Launcher() {
-        JFrame jframe = new JFrame("Launcher");
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
-        jframe.setSize(500, 200);
-        jframe.setLocationRelativeTo(null);
-        log.info("Attempting to set icon");
-        Image image = new ImageIcon((getClass().getResource("/icons/BeST_512.png"))).getImage();
-        jframe.setIconImage(image);
+        if (!SystemTray.isSupported()) {
+            final String message = "The SystemTray is unsupported on this platform (" + System.getProperty("os.name")
+                    + " " + System.getProperty("os.arch") + ")";
+            log.error(message);
+            JOptionPane
+            .showMessageDialog(
+                    null,
+                    "Unfortunately, your platform is not supported.\nIf you choose to report this error, please include the following information:\nOS: "
+                            + System.getProperty("os.name") + "\nArch: " + System.getProperty("os.arch"),
+                            "Unsupported Platform", JOptionPane.ERROR_MESSAGE);
+        } else {
+            IconManager.loadIcons();
+            new Tray();
+        }
     }
 
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -40,6 +47,30 @@ public class Launcher {
                 new Launcher();
             }
         });
+    }
 
+    public static String getName() {
+        String appname = "";
+        final Properties pom = new Properties();
+        try {
+            pom.load(Launcher.class.getResourceAsStream("/META-INF/maven/org.nolat/BeST/pom.properties"));
+            appname = pom.getProperty("artifactId");
+        } catch (IOException e) {
+            appname = "DEV";
+            log.error(e);
+        }
+        return appname;
+    }
+
+    public static String getVersion() {
+        String version = "";
+        final Properties pom = new Properties();
+        try {
+            pom.load(Launcher.class.getResourceAsStream("/META-INF/maven/org.nolat/BeST/pom.properties"));
+            version = pom.getProperty("version");
+        } catch (IOException e) {
+            log.error(e);
+        }
+        return version;
     }
 }

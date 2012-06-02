@@ -19,3 +19,8 @@ Links
 -----
 *  [Issue Tracker/Feature request](https://www.pivotaltracker.com/projects/564685)
 *  [Continuous Integration](http://nolat.org/jenkins/job/BeST/)
+
+Thanks
+------
+*  Some icons by [Mark James](http://www.famfamfam.com/lab/icons/silk/)
+*  Some icons by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com)
