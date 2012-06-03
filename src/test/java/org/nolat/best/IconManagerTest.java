@@ -59,14 +59,5 @@ public class IconManagerTest {
         actualResult = IconManager.stripExtensionAndPath(path);
         log.info("Expecting " + expectedResult + "; got " + actualResult);
         assertEquals(expectedResult, actualResult);
-
-        //        This isn't likely to occur as I am mostly in control of what paths will be used and nobody would use relative
-        //        paths like this anyway
-
-        //        path = "/../test";
-        //        expectedResult = "test";
-        //        actualResult = IconManager.stripExtensionAndPath(path);
-        //        log.info("Expecting " + expectedResult + "; got " + actualResult);
-        //        assertEquals(expectedResult, actualResult);
     }
 }

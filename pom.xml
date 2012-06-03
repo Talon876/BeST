@@ -116,13 +116,13 @@
                 <version>1.5.0.0</version>
                 <executions>
                     <execution>
-                        <id>l4j-cli</id>
+                        <id>l4j-gui</id>
                         <phase>package</phase>
                         <goals>
                             <goal>launch4j</goal>
                         </goals>
                         <configuration>
-                            <headerType>console</headerType>
+                            <headerType>gui</headerType>
                             <outfile>target/${project.artifactId}-${project.version}.exe</outfile>
                             <jar>target/${project.artifactId}-${project.version}-full.jar</jar> <!-- 'full' is the value set on shadedClassifierName above -->
                             <errTitle>${project.artifactId} - Error</errTitle>

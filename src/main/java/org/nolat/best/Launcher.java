@@ -16,18 +16,13 @@ import org.pushingpixels.substance.api.skin.SubstanceOfficeBlack2007LookAndFeel;
 public class Launcher {
 
     private static final Logger log = Logger.getLogger(Launcher.class);
+    private static final String UNSUPPORTED_ERROR = "Unfortunately, your platform is not supported.\nIf you choose to report this error, please include the following information:\nOS: "
+            + System.getProperty("os.name") + "\nArch: " + System.getProperty("os.arch");
 
     public Launcher() {
         if (!SystemTray.isSupported()) {
-            final String message = "The SystemTray is unsupported on this platform (" + System.getProperty("os.name")
-                    + " " + System.getProperty("os.arch") + ")";
-            log.error(message);
-            JOptionPane
-            .showMessageDialog(
-                    null,
-                    "Unfortunately, your platform is not supported.\nIf you choose to report this error, please include the following information:\nOS: "
-                            + System.getProperty("os.name") + "\nArch: " + System.getProperty("os.arch"),
-                            "Unsupported Platform", JOptionPane.ERROR_MESSAGE);
+            log.error(UNSUPPORTED_ERROR);
+            JOptionPane.showMessageDialog(null, UNSUPPORTED_ERROR, "Unsupported Platform", JOptionPane.ERROR_MESSAGE);
         } else {
             IconManager.loadIcons();
             new Tray();

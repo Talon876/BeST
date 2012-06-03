@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
+import org.nolat.best.tasks.TaskManager;
 
 public class Tray implements ActionListener {
 
@@ -114,10 +115,7 @@ public class Tray implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         log.debug("ActionCommand " + e.getActionCommand() + " activated");
-        switch (e.getActionCommand()) {
-        case "exit":
-            System.exit(0);
-            break;
-        }
+
+        TaskManager.execute(e.getActionCommand());
     }
 }
