@@ -88,13 +88,11 @@ public class ImgurUpload implements Runnable {
         return url;
     }
 
-    private String parseJson(String json) {
-
+    private String parseJson(String jsonAsString) {
         String url = null;
-
-        Json j = Json.read(json);
-        System.out.println("j: " + j.asJsonMap().containsKey("original"));
-
+        Json json = Json.read(jsonAsString);
+        url = json.asJsonMap().get("upload").asJsonMap().get("links").asJsonMap().get("original").asString();
+        log.info("URL: " + url);
         return url;
     }
 }

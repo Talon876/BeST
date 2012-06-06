@@ -72,9 +72,9 @@ public class Tray implements ActionListener {
         screenshotMenu.addActionListener(this);
         screenshotMenu.setActionCommand("screenshot");
 
-        JMenuItem saveTextMenu = new JMenuItem("Save Text to Pastebin", IconManager.getIcon("page_white_link"));
-        saveTextMenu.addActionListener(this);
-        saveTextMenu.setActionCommand("text");
+        //        JMenuItem saveTextMenu = new JMenuItem("Save Text to Pastebin", IconManager.getIcon("page_white_link"));
+        //        saveTextMenu.addActionListener(this);
+        //        saveTextMenu.setActionCommand("text");
 
         JMenuItem preferencesMenu = new JMenuItem("Preferences", IconManager.getIcon("wrench"));
         preferencesMenu.addActionListener(this);
@@ -87,7 +87,7 @@ public class Tray implements ActionListener {
         popup.add(helpMenu);
         popup.addSeparator();
         popup.add(screenshotMenu);
-        popup.add(saveTextMenu);
+        //        popup.add(saveTextMenu);
         popup.add(preferencesMenu);
         popup.addSeparator();
         popup.add(exitMenu);
