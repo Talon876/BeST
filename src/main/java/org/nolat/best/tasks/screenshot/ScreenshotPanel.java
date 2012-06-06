@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.nolat.best.Tray;
+import org.nolat.best.tasks.net.ImgurUpload;
 
 @SuppressWarnings("serial")
 public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
@@ -65,6 +67,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         drawOverlay(g2d);
         drawSelection(g2d);
         drawCursor(g2d);
+        drawHelp(g2d);
         repaint();
     }
 
@@ -72,7 +75,6 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         g2d.setColor(new Color(0, 0, 0, 50));
         g2d.fillRect(0, 0, getWidth(), getHeight());
         g2d.setColor(Color.BLACK);
-        g2d.drawString(mx + " " + my, mx + 5, my + 50);
     }
 
     private void drawSelection(Graphics2D g2d) {
@@ -80,6 +82,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         Rectangle select = selection.getBounds();
         if (getSelectedImage() != null) {
             g2d.drawImage(getSelectedImage(), select.x, select.y, null);
+            g2d.drawRect(select.x - 1, select.y - 1, select.width + 1, select.height + 1);
         }
     }
 
@@ -92,6 +95,14 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         g2d.setColor(new Color(0, 0, 0, 64));
         g2d.drawLine(mx - 4, my, mx + 4, my); //horizontal
         g2d.drawLine(mx, my - 4, mx, my + 4); //vertical
+        g2d.setColor(Color.BLACK);
+    }
+
+    private void drawHelp(Graphics2D g2d) {
+        g2d.setColor(new Color(32, 32, 32, 128));
+        g2d.drawString("Click and drag to select.", mx + 5, my + 15);
+        g2d.drawString("Press <enter> to upload.", mx + 5, my + 30);
+        g2d.drawString("Press <esc> to cancel.", mx + 5, my + 45);
         g2d.setColor(Color.BLACK);
     }
 
@@ -158,10 +169,15 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     @Override
     public void keyReleased(KeyEvent ke) {
         if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (getSelectedImage() == null) { //close the window
+            parent.dispose();
+        } else if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (getSelectedImage() == null) {
                 parent.dispose();
             } else {
+                new ImgurUpload(getSelectedImage());
                 clearSelection();
+                parent.dispose();
+                Tray.publishMessage("Your screenshot will be uploaded soon. Probably.", "Uploading...");
             }
         }
     }

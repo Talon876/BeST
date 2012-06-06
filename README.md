@@ -24,3 +24,4 @@ Thanks
 ------
 *  Some icons by [Mark James](http://www.famfamfam.com/lab/icons/silk/)
 *  Some icons by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com)
+*  Inspired by [SnippingTool++](https://github.com/ShaneIsrael/SnippingTool) by Shane Israel

@@ -1,6 +1,7 @@
 package org.nolat.best;
 
 import java.awt.SystemTray;
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -24,9 +25,17 @@ public class Launcher {
             log.error(UNSUPPORTED_ERROR);
             JOptionPane.showMessageDialog(null, UNSUPPORTED_ERROR, "Unsupported Platform", JOptionPane.ERROR_MESSAGE);
         } else {
+            makeDirs();
             IconManager.loadIcons();
             new Tray();
         }
+    }
+
+    private void makeDirs() {
+        File appHome = new File(System.getProperty("user.home") + "/.BeST/screenshots/");
+        appHome.mkdirs();
+        appHome = new File(System.getProperty("user.home") + "/.BeST/share/");
+        appHome.mkdirs();
     }
 
     public static void main(String[] args) {

@@ -23,7 +23,7 @@ public class IconManager {
     }
 
     public static void loadIcons() {
-        addIcon("/icons/brick.png");
+        addIcon("/icons/arrow_divide.png");
         addIcon("/icons/wrench.png");
         addIcon("/icons/camera_link.png");
         addIcon("/icons/page_white_link.png");

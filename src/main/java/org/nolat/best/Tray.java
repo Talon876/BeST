@@ -25,7 +25,7 @@ public class Tray implements ActionListener {
     }
 
     private void initializeTray() {
-        tray = new JXTrayIcon(IconManager.getIcon("brick").getImage(), Launcher.getName() + " - "
+        tray = new JXTrayIcon(IconManager.getIcon("arrow_divide").getImage(), Launcher.getName() + " - "
                 + Launcher.getVersion());
         popup = buildPopupMenu();
 
@@ -41,7 +41,7 @@ public class Tray implements ActionListener {
             log.error(e);
         }
         //TODO Only do this on first launch once properties has been enabled
-        Tray.publishMessage("BeST has been launched. Rightclick the icon for more information.", "Welcome!");
+        Tray.publishMessage("Rightclick the icon for more information.", "Welcome!");
     }
 
     private JPopupMenu buildPopupMenu() {
