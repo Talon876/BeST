@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -63,6 +64,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.drawImage(background, 0, 0, null);
         drawOverlay(g2d);
         drawSelection(g2d);
@@ -82,11 +84,14 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         Rectangle select = selection.getBounds();
         if (getSelectedImage() != null) {
             g2d.drawImage(getSelectedImage(), select.x, select.y, null);
+            g2d.setColor(Color.RED);
             g2d.drawRect(select.x - 1, select.y - 1, select.width + 1, select.height + 1);
+            g2d.setColor(Color.BLACK);
         }
     }
 
     private void drawCursor(Graphics2D g2d) {
+        g2d.setColor(Color.RED);
         g2d.drawLine(0, my, mx - 8, my); //left
         g2d.drawLine(mx, 0, mx, my - 8); //top
         g2d.drawLine(bounds.width, my, mx + 8, my); //right
@@ -99,7 +104,9 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     }
 
     private void drawHelp(Graphics2D g2d) {
-        g2d.setColor(new Color(32, 32, 32, 128));
+        g2d.setColor(new Color(255, 255, 255, 255));
+        g2d.fillRoundRect(mx + 3, my + 3, 134, 46, 6, 6);
+        g2d.setColor(new Color(32, 32, 32, 192));
         g2d.drawString("Click and drag to select.", mx + 5, my + 15);
         g2d.drawString("Press <enter> to upload.", mx + 5, my + 30);
         g2d.drawString("Press <esc> to cancel.", mx + 5, my + 45);
