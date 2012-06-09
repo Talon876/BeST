@@ -70,7 +70,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         drawSelection(g2d);
         drawCursor(g2d);
         drawHelp(g2d);
-        repaint();
+        //repaint();
     }
 
     private void drawOverlay(Graphics2D g2d) {
@@ -104,7 +104,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     }
 
     private void drawHelp(Graphics2D g2d) {
-        g2d.setColor(new Color(255, 255, 255, 255));
+        g2d.setColor(new Color(255, 255, 255, 64));
         g2d.fillRoundRect(mx + 3, my + 3, 134, 46, 6, 6);
         g2d.setColor(new Color(32, 32, 32, 192));
         g2d.drawString("Click and drag to select.", mx + 5, my + 15);
