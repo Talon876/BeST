@@ -30,6 +30,7 @@ public class IconManager {
         addIcon("/icons/cancel.png");
         addIcon("/icons/help.png");
         addIcon("/icons/information.png");
+        addIcon("/icons/cog.png");
     }
 
     public static String stripExtensionAndPath(String path) {

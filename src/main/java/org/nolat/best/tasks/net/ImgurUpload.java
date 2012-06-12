@@ -92,6 +92,7 @@ public class ImgurUpload implements Runnable {
         String url = null;
         Json json = Json.read(jsonAsString);
         url = json.asJsonMap().get("upload").asJsonMap().get("links").asJsonMap().get("original").asString();
+
         log.info("URL: " + url);
         return url;
     }

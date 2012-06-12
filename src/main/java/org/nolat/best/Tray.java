@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
+import org.nolat.best.preferences.Prefs;
 import org.nolat.best.tasks.TaskManager;
 
 public class Tray implements ActionListener {
@@ -40,8 +41,11 @@ public class Tray implements ActionListener {
         } catch (AWTException e) {
             log.error(e);
         }
-        //TODO Only do this on first launch once properties has been enabled
-        Tray.publishMessage("Rightclick the icon for more information.", "Welcome!");
+        if (Prefs.prefs.at("app.displaywelcome").asBoolean()) {
+            Tray.publishMessage("Rightclick the icon for more information.", "Thanks for trying BeST!");
+            Prefs.prefs.set("app.displaywelcome", false);
+            Prefs.save();
+        }
     }
 
     private JPopupMenu buildPopupMenu() {
@@ -76,9 +80,13 @@ public class Tray implements ActionListener {
         //        saveTextMenu.addActionListener(this);
         //        saveTextMenu.setActionCommand("text");
 
-        JMenuItem preferencesMenu = new JMenuItem("Preferences", IconManager.getIcon("wrench"));
+        JMenuItem preferencesMenu = new JMenuItem("Preferences", IconManager.getIcon("cog"));
         preferencesMenu.addActionListener(this);
         preferencesMenu.setActionCommand("preferences");
+
+        JMenuItem toolsMenu = new JMenuItem("Tools", IconManager.getIcon("wrench"));
+        toolsMenu.addActionListener(this);
+        toolsMenu.setActionCommand("tools");
 
         JMenuItem exitMenu = new JMenuItem("Exit", IconManager.getIcon("cancel"));
         exitMenu.addActionListener(this);
@@ -88,6 +96,7 @@ public class Tray implements ActionListener {
         popup.addSeparator();
         popup.add(screenshotMenu);
         //        popup.add(saveTextMenu);
+        popup.add(toolsMenu);
         popup.add(preferencesMenu);
         popup.addSeparator();
         popup.add(exitMenu);

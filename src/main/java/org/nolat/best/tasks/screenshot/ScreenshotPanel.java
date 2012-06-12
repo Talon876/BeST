@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.nolat.best.Tray;
+import org.nolat.best.preferences.Prefs;
 import org.nolat.best.tasks.net.ImgurUpload;
 
 @SuppressWarnings("serial")
@@ -36,6 +37,8 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     private Point endPoint = new Point();
     private final Rectangle2D selection;
     private final ScreenshotTask parent;
+    private static final String[] HELP_TEXT = { "Click and drag to select.", "Press <enter> to upload.",
+        "Press <esc> to cancel.", "<c> toggles crosshair.", "<F1> toggles this help." };
 
     public ScreenshotPanel(Rectangle bounds, ScreenshotTask parent) {
         this.bounds = bounds;
@@ -50,14 +53,18 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
-        hideCursor();
+        updateCursor();
         selection = new Rectangle2D.Double();
     }
 
-    private void hideCursor() {
-        BufferedImage blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImg, new Point(0, 0), null);
-        setCursor(blankCursor);
+    private void updateCursor() {
+        if (Prefs.prefs.at("screenshot.crosshair.enabled").asBoolean()) {
+            BufferedImage blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImg, new Point(0, 0), null);
+            setCursor(blankCursor);
+        } else {
+            setCursor(Cursor.getDefaultCursor());
+        }
     }
 
     @Override
@@ -70,7 +77,6 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
         drawSelection(g2d);
         drawCursor(g2d);
         drawHelp(g2d);
-        //repaint();
     }
 
     private void drawOverlay(Graphics2D g2d) {
@@ -91,26 +97,30 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
     }
 
     private void drawCursor(Graphics2D g2d) {
-        g2d.setColor(Color.RED);
-        g2d.drawLine(0, my, mx - 8, my); //left
-        g2d.drawLine(mx, 0, mx, my - 8); //top
-        g2d.drawLine(bounds.width, my, mx + 8, my); //right
-        g2d.drawLine(mx, bounds.height, mx, my + 8); //bottom
+        if (Prefs.prefs.at("screenshot.crosshair.enabled").asBoolean()) {
+            g2d.setColor(Color.RED);
+            g2d.drawLine(0, my, mx - 8, my); //left
+            g2d.drawLine(mx, 0, mx, my - 8); //top
+            g2d.drawLine(bounds.width, my, mx + 8, my); //right
+            g2d.drawLine(mx, bounds.height, mx, my + 8); //bottom
 
-        g2d.setColor(new Color(0, 0, 0, 64));
-        g2d.drawLine(mx - 4, my, mx + 4, my); //horizontal
-        g2d.drawLine(mx, my - 4, mx, my + 4); //vertical
-        g2d.setColor(Color.BLACK);
+            g2d.setColor(new Color(0, 0, 0, 64));
+            g2d.drawLine(mx - 4, my, mx + 4, my); //horizontal
+            g2d.drawLine(mx, my - 4, mx, my + 4); //vertical
+            g2d.setColor(Color.BLACK);
+        }
     }
 
     private void drawHelp(Graphics2D g2d) {
-        g2d.setColor(new Color(255, 255, 255, 64));
-        g2d.fillRoundRect(mx + 3, my + 3, 134, 46, 6, 6);
-        g2d.setColor(new Color(32, 32, 32, 192));
-        g2d.drawString("Click and drag to select.", mx + 5, my + 15);
-        g2d.drawString("Press <enter> to upload.", mx + 5, my + 30);
-        g2d.drawString("Press <esc> to cancel.", mx + 5, my + 45);
-        g2d.setColor(Color.BLACK);
+        if (Prefs.prefs.at("screenshot.help.enabled").asBoolean()) {
+            g2d.setColor(new Color(255, 255, 255, 64));
+            g2d.fillRoundRect(mx + 3, my + 3, 134, HELP_TEXT.length * 16 - 2, 6, 6);
+            g2d.setColor(new Color(32, 32, 32, 192));
+            for (int i = 0; i < HELP_TEXT.length; i++) {
+                g2d.drawString(HELP_TEXT[i], mx + 5, my + ((i + 1) * 15));
+            }
+            g2d.setColor(Color.BLACK);
+        }
     }
 
     private BufferedImage getSelectedImage() {
@@ -186,6 +196,11 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
                 parent.dispose();
                 Tray.publishMessage("Your screenshot will be uploaded soon. Probably.", "Uploading...");
             }
+        } else if (ke.getKeyCode() == KeyEvent.VK_F1) {
+            Prefs.toggleBooleanProperty("screenshot.help.enabled");
+        } else if (ke.getKeyCode() == KeyEvent.VK_C) {
+            Prefs.toggleBooleanProperty("screenshot.crosshair.enabled");
+            updateCursor();
         }
     }
 
