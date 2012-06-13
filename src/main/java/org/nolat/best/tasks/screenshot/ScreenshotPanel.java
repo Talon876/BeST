@@ -21,7 +21,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.nolat.best.Tray;
 import org.nolat.best.preferences.Prefs;
 import org.nolat.best.tasks.net.ImgurUpload;
 
@@ -194,7 +193,7 @@ public class ScreenshotPanel extends JPanel implements MouseListener, MouseMotio
                 new ImgurUpload(getSelectedImage());
                 clearSelection();
                 parent.dispose();
-                Tray.publishMessage("Your screenshot will be uploaded soon. Probably.", "Uploading...");
+                //Tray.publishMessage("Your screenshot will be uploaded soon. Probably.", "Uploading...");
             }
         } else if (ke.getKeyCode() == KeyEvent.VK_F1) {
             Prefs.toggleBooleanProperty("screenshot.help.enabled");

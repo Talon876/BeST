@@ -34,8 +34,8 @@ public class Prefs {
             while ((currLine = input.readLine()) != null) {
                 theFile += currLine;
             }
-            System.out.println(theFile);
             prefs = Json.read(theFile);
+            input.close();
         } catch (IOException e) {
             log.error(e);
         }
@@ -65,6 +65,7 @@ public class Prefs {
         prefMap.put("screenshot.help.enabled", true);
         prefMap.put("screenshot.crosshair.enabled", true);
         prefMap.put("app.displaywelcome", true);
+        prefMap.put("app.collectdata", true);
 
         prefs = Json.make(prefMap);
         log.info("Default Properties: " + beautifyJson(Json.make(prefMap).toString()));
@@ -73,5 +74,15 @@ public class Prefs {
 
     private static String beautifyJson(String json) {
         return json.replace("{", "{\n").replace(",", ",\n").replace("}", "\n}");
+    }
+
+    public static Json getEnvironmentProperties() {
+        Json properties = Json.object();
+        String[] propertiesList = { "java.version", "java.vendor", "java.home", "java.vm.version",
+                "java.class.version", "os.name", "os.arch", "os.version" };
+        for (String property : propertiesList) {
+            properties.set(property, System.getProperty(property));
+        }
+        return properties;
     }
 }

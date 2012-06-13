@@ -13,6 +13,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
 import org.nolat.best.preferences.Prefs;
+import org.nolat.best.tracking.Track;
 import org.pushingpixels.substance.api.skin.SubstanceOfficeBlack2007LookAndFeel;
 
 public class Launcher {
@@ -29,6 +30,9 @@ public class Launcher {
             makeDirs();
             IconManager.loadIcons();
             Prefs.load();
+            if (Prefs.prefs.at("app.displaywelcome").asBoolean()) {
+                Track.track(Prefs.getEnvironmentProperties());
+            }
             new Tray();
         }
     }

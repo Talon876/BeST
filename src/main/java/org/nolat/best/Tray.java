@@ -92,6 +92,10 @@ public class Tray implements ActionListener {
         exitMenu.addActionListener(this);
         exitMenu.setActionCommand("exit");
 
+        JMenuItem debugMenu = new JMenuItem("Debug");
+        debugMenu.addActionListener(this);
+        debugMenu.setActionCommand("debug");
+
         popup.add(helpMenu);
         popup.addSeparator();
         popup.add(screenshotMenu);
@@ -100,6 +104,8 @@ public class Tray implements ActionListener {
         popup.add(preferencesMenu);
         popup.addSeparator();
         popup.add(exitMenu);
+        popup.addSeparator();
+        popup.add(debugMenu);
 
         return popup;
     }

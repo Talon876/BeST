@@ -16,6 +16,9 @@ public class TaskManager {
         case "screenshot":
             new ScreenshotTask();
             break;
+        case "debug":
+            new DebugTask();
+            break;
         default:
             log.warn("Command " + command + " was not found.");
             break;
